@@ -1,0 +1,121 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card Generator</title>
+    <style>
+        .id-card {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #000;
+            width: 300px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+        .id-card h2 {
+            text-align: center;
+        }
+        .id-card p {
+            margin: 5px 0;
+        }
+        .id-card img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 10px auto;
+            border-radius: 50%;
+            border: 1px solid #000;
+        }
+        form {
+            background-color: #f0f8ff; 
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            margin: 20px auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white; 
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style> 
+</head>
+<body>
+    <form onsubmit="createIDCard(event)">
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" placeholder="John" required><br><br>
+
+        <label for="sname">Second Name:</label>
+        <input type="text" id="sname" placeholder="Doe" required><br><br>
+
+        <label for="phno">Phone Number:</label>
+        <input type="tel" id="phno" placeholder="123-456-7890" required><br><br>
+
+        <label for="blood">Blood Group:</label>
+        <input type="text" id="blood" placeholder="O+" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="john.doe@example.com" required><br><br>
+
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" accept="image/*" required><br><br>
+
+        <input type="submit" value="Generate ID Card">
+    </form>
+
+    <div id="idCardContainer"></div>
+
+    <script>
+        function createIDCard(event) {
+            event.preventDefault();
+
+            // Get form values
+            let name = document.getElementById("fname").value;
+            let sname = document.getElementById("sname").value;
+            let phno = document.getElementById("phno").value;
+            let blood = document.getElementById("blood").value;
+            let email = document.getElementById("email").value;
+
+            // Get and read photo
+            let photo = document.getElementById("photo").files[0];
+            if (!photo) {
+                alert("Please upload a photo.");
+                return;
+            }
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let photoURL = e.target.result;
+                let idCardHTML = `
+                    <div class="id-card">
+                        <h2>ID Card</h2>
+                        <img src="${photoURL}" alt="Profile Photo">
+                        <p><strong>First Name:</strong> ${name}</p>
+                        <p><strong>Second Name:</strong> ${sname}</p>
+                        <p><strong>Phone Number:</strong> ${phno}</p>
+                        <p><strong>Blood Group:</strong> ${blood}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                    </div>
+                `;
+                document.getElementById("idCardContainer").innerHTML = idCardHTML;
+            };
+
+            reader.readAsDataURL(photo);
+        }
+    </script>
+</body>
+</html>
